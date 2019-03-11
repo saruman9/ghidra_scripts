@@ -4,6 +4,8 @@
 
 ### External references search
 
+[file](./FindExternalReferences.py)
+
 Script find all references to the functions from all external programs (shared
 libraries) and set external references, set name and prototype (signature) of
 the functions.
