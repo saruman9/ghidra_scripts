@@ -1,16 +1,14 @@
-# Ghidra scripts, plugins, etc
+# Ghidra scripts
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
-- [Scripts](#scripts)
+- [Ghidra scripts](#ghidra-scripts)
     - [External references search](#external-references-search)
 
 <!-- markdown-toc end -->
 
-## Scripts
-
-### External references search
+## External references search
 
 [file](./FindExternalReferences.py)
 
@@ -23,6 +21,8 @@ the functions.
 - if addresses of functions of external programs overlapped, then script will
 use the function from last external program;
 
-- script force rewrites name and prototype of functions now.
+- script force rewrites name and prototype of functions now;
+
+- script not edit already external functions.
 
 ![Find external references](./find_external_references.gif)
