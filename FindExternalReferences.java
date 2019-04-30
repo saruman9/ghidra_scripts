@@ -182,7 +182,8 @@ public class FindExternalReferences extends GhidraScript {
         // Memory blocks and symbols should be sorted by address
         SymbolTable symbolTable = currentProgram.getSymbolTable();
         for (MemoryBlock memoryBlock : currentProgram.getMemory().getBlocks()) {
-            if (memoryBlock.getSourceName().equals("External References resolver")) {
+            String sourceName = memoryBlock.getSourceName();
+            if (sourceName != null && sourceName.equals("External References resolver")) {
                 SymbolIterator symbolIterator = symbolTable.getAllSymbols(true);
                 AddressRange addressRange = new AddressRangeImpl(memoryBlock.getStart(), memoryBlock.getEnd());
                 for (Symbol currentSymbol : symbolIterator) {
