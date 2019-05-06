@@ -362,6 +362,7 @@ public class FindExternalReferences extends GhidraScript {
             SourceType sourceType = SourceType.IMPORTED;
             Parameter[] parameters = functionLibrary.getParameters();
 
+            String nameFunction = functionLibrary.getName();
             String callFixup = functionLibrary.getCallFixup();
             boolean hasCustomVariableStorage = functionLibrary.hasCustomVariableStorage();
             boolean isInline = functionLibrary.isInline();
@@ -370,6 +371,7 @@ public class FindExternalReferences extends GhidraScript {
             boolean hasVarArgs = functionLibrary.hasVarArgs();
 
             try {
+                functionTarget.setName(nameFunction, sourceType);
                 functionTarget.updateFunction(callingConventionName,
                         returnFunctionLibrary,
                         updateType,
