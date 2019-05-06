@@ -262,6 +262,15 @@ public class FindExternalReferences extends GhidraScript {
         Listing listingLibrary = programLibrary.getListing();
         String nameSymbolLibrary = symbolLibrary.getName();
         Data dataLibrary = listingLibrary.getDataAt(addressLibrary);
+        if (dataLibrary == null) {
+            BookmarkManager bookmarkManager = currentProgram.getBookmarkManager();
+            String message = String.format("Unable to resolve data at %s", symbolLibrary.getAddress());
+            bookmarkManager.setBookmark(symbolTarget.getAddress(),
+                    "Warning",
+                    "Bad data",
+                    message);
+            return;
+        }
         DataType dataTypeLibrary = dataLibrary.getDataType();
 
         Address addressTarget = symbolTarget.getAddress();
