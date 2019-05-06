@@ -35,6 +35,7 @@ import ghidra.program.model.mem.Memory;
 import ghidra.program.model.mem.MemoryBlock;
 import ghidra.program.model.mem.MemoryConflictException;
 import ghidra.program.model.symbol.ExternalLocation;
+import ghidra.program.model.symbol.ExternalLocationIterator;
 import ghidra.program.model.symbol.ExternalManager;
 import ghidra.program.model.symbol.RefType;
 import ghidra.program.model.symbol.Reference;
@@ -193,6 +194,18 @@ public class FindExternalReferences extends GhidraScript {
                     if (addressRange.contains(currentSymbol.getAddress())) {
                         createExternalSymbols(currentSymbol, librariesProgram);
                     }
+                }
+            }
+        }
+
+        // Delete external symbols without references
+        ExternalManager externalManager = currentProgram.getExternalManager();
+        for (String nameLibrary : externalManager.getExternalLibraryNames()) {
+            ExternalLocationIterator externalLocationIterator = externalManager.getExternalLocations(nameLibrary);
+            while (externalLocationIterator.hasNext()) {
+                Symbol symbol = externalLocationIterator.next().getSymbol();
+                if (symbol.getReferenceCount() == 0) {
+                    symbol.delete();
                 }
             }
         }
