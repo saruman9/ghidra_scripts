@@ -203,9 +203,12 @@ public class FindExternalReferences extends GhidraScript {
         for (String nameLibrary : externalManager.getExternalLibraryNames()) {
             ExternalLocationIterator externalLocationIterator = externalManager.getExternalLocations(nameLibrary);
             while (externalLocationIterator.hasNext()) {
-                Symbol symbol = externalLocationIterator.next().getSymbol();
-                if (symbol.getReferenceCount() == 0) {
-                    symbol.delete();
+                ExternalLocation externalLocation = externalLocationIterator.next();
+                if (externalLocation.isFunction()) {
+                    Symbol symbol = externalLocation.getSymbol();
+                    if (symbol.getReferenceCount() == 0) {
+                        symbol.delete();
+                    }
                 }
             }
         }
