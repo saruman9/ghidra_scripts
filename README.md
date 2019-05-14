@@ -7,6 +7,8 @@
     - [Installing scripts](#installing-scripts)
     - [External references search](#external-references-search)
         - [Instruction](#instruction)
+    - [Set entry points in selection](#set-entry-points-in-selection)
+        - [Instruction](#instruction-1)
 
 <!-- markdown-toc end -->
 
@@ -65,3 +67,15 @@ comment with value and annotation with link to external program).
 
 ![In memory located symbols](images/in_memory_located_symbols.png)
 > Figure 4. Symbol with `Global` Namespace have true references
+
+## Set entry points in selection
+
+| :information_source: | [Source file](./SetEntryPointsInSelection.java) |
+| -----                | -----                                        |
+
+Script set all labels (functions) in selection as Entry Point.
+
+### Instruction
+
+1. Select needed functions through Functions window.
+2. Run the script.
