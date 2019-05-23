@@ -117,7 +117,7 @@ public class FindExternalReferences extends GhidraScript {
             }
 
             createMemoryMaps();
-            if (isCancelled) {
+            if (isCancelled || monitor.isCancelled()) {
                 return;
             }
 
@@ -142,6 +142,7 @@ public class FindExternalReferences extends GhidraScript {
     }
 
     private void createMemoryMaps() {
+        boolean isShownWarning = false;
         for (Map.Entry<String, List<AddressRange>> intersect : intersectMemMap.entrySet()) {
             Memory memory = currentProgram.getMemory();
             List<AddressRange> addressRanges = intersect.getValue();
@@ -163,11 +164,25 @@ public class FindExternalReferences extends GhidraScript {
                     memoryBlock.setComment("NOTE: This block is artificial and is used" +
                             " to make external references work correctly");
                 } catch (DuplicateNameException
-                        | AddressOverflowException
-                        | LockException e) {
+                        | AddressOverflowException e) {
                     Msg.showError(this, null, "Error creating memory", e);
                     isCancelled = true;
                     return;
+                } catch (LockException e) {
+                    // TODO: Move the checking over memory blocks creation
+                    if (!isShownWarning) {
+                        boolean bContinue = askYesNo("Without exclusive check out",
+                                "You don't have exclusive check out. " +
+                                        "Only existed artificial memory blocks will be analyzed!\n" +
+                                        "Exclusive check out required for first run of the script. " +
+                                        "Do you want to continue analysis?");
+                        if (!bContinue) {
+                            monitor.cancel();
+                            return;
+                        }
+
+                        isShownWarning = true;
+                    }
                 }
                 // Ignore if memory already exist
                 // TODO: Resolve partial overlapping
