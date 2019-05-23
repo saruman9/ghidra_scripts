@@ -51,13 +51,14 @@ import ghidra.util.exception.VersionException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FindExternalReferences extends GhidraScript {
 
-    private HashMap<String, List<AddressRange>> intersectMemMap = new HashMap<>();
+    private HashMap<String, List<MemoryBlock>> intersectMemMap = new HashMap<>();
     private boolean isCancelled = false;
 
     @Override
@@ -143,29 +144,28 @@ public class FindExternalReferences extends GhidraScript {
 
     private void createMemoryMaps() {
         boolean isShownWarning = false;
-        for (Map.Entry<String, List<AddressRange>> intersect : intersectMemMap.entrySet()) {
+        for (Map.Entry<String, List<MemoryBlock>> intersect : intersectMemMap.entrySet()) {
             Memory memory = currentProgram.getMemory();
-            List<AddressRange> addressRanges = intersect.getValue();
+            List<MemoryBlock> memoryBlocks = intersect.getValue();
             int index = 0;
-            for (AddressRange addressRange : addressRanges) {
-                if (!isExistReferences(new AddressSet(addressRange))) {
+            for (MemoryBlock memoryBlock : memoryBlocks) {
+                if (!isExistReferences(new AddressSet(memoryBlock.getStart(), memoryBlock.getEnd()))) {
                     continue;
                 }
                 String name = String.format("%s_%d", intersect.getKey(), index);
                 try {
-                    MemoryBlock memoryBlock = memory.createUninitializedBlock(name,
-                            addressRange.getMinAddress(),
-                            addressRange.getLength(),
+                    MemoryBlock newMemoryBlock = memory.createUninitializedBlock(name,
+                            memoryBlock.getStart(),
+                            memoryBlock.getSize(),
                             false);
-                    // TODO: Only execute?
-                    memoryBlock.setExecute(true);
-                    memoryBlock.setWrite(true);
-                    memoryBlock.setSourceName("External References resolver");
-                    memoryBlock.setComment("NOTE: This block is artificial and is used" +
+                    newMemoryBlock.setExecute(memoryBlock.isExecute());
+                    newMemoryBlock.setWrite(memoryBlock.isWrite());
+                    newMemoryBlock.setSourceName("External References resolver");
+                    newMemoryBlock.setComment("NOTE: This block is artificial and is used" +
                             " to make external references work correctly");
                 } catch (DuplicateNameException
                         | AddressOverflowException e) {
-                    Msg.showError(this, null, "Error creating memory", e);
+                    Msg.showError(this, null, "Error of creating memory block", e);
                     isCancelled = true;
                     return;
                 } catch (LockException e) {
@@ -235,9 +235,9 @@ public class FindExternalReferences extends GhidraScript {
         String pathnameLibrary = null;
         Program programLibrary = null;
 
-        for (Map.Entry<String, List<AddressRange>> entry : intersectMemMap.entrySet()) {
-            for (AddressRange addressRange : entry.getValue()) {
-                if (addressRange.contains(addressTarget)) {
+        for (Map.Entry<String, List<MemoryBlock>> entry : intersectMemMap.entrySet()) {
+            for (MemoryBlock memoryBlock : entry.getValue()) {
+                if (memoryBlock.contains(addressTarget)) {
                     pathnameLibrary = entry.getKey();
                     break;
                 }
@@ -424,24 +424,28 @@ public class FindExternalReferences extends GhidraScript {
     }
 
     private void checkIntersections() {
-        List<Pair<String, AddressRange>> addressRanges = new ArrayList<>();
-        for (Map.Entry<String, List<AddressRange>> entry : intersectMemMap.entrySet()) {
-            for (AddressRange addressRange : entry.getValue()) {
-                addressRanges.add(new Pair<>(entry.getKey(), addressRange));
+        List<Pair<String, MemoryBlock>> memoryBlocks = new ArrayList<>();
+        for (Map.Entry<String, List<MemoryBlock>> entry : intersectMemMap.entrySet()) {
+            for (MemoryBlock memoryBlock : entry.getValue()) {
+                memoryBlocks.add(new Pair<>(entry.getKey(), memoryBlock));
             }
         }
 
-        for (int i = 0; i < addressRanges.size(); i++) {
-            for (int j = i + 1; j < addressRanges.size(); j++) {
-                Pair<String, AddressRange> addressRangeFirst = addressRanges.get(i);
-                Pair<String, AddressRange> addressRangeSecond = addressRanges.get(j);
-                AddressRange intersect = addressRangeFirst.second.intersect(addressRangeSecond.second);
+        for (int i = 0; i < memoryBlocks.size(); i++) {
+            for (int j = i + 1; j < memoryBlocks.size(); j++) {
+                Pair<String, MemoryBlock> memoryBlockFirst = memoryBlocks.get(i);
+                Pair<String, MemoryBlock> memoryBlockSecond = memoryBlocks.get(j);
+                AddressRange addressRangeFirst = new AddressRangeImpl(memoryBlockFirst.second.getStart(),
+                        memoryBlockFirst.second.getEnd());
+                AddressRange addressRangeSecond = new AddressRangeImpl(memoryBlockSecond.second.getStart(),
+                        memoryBlockSecond.second.getEnd());
+                AddressRange intersect = addressRangeFirst.intersect(addressRangeSecond);
                 if (intersect != null) {
                     isCancelled = true;
                     String message =
                             String.format("%s intersects %s (%s).",
-                                    addressRangeFirst.first,
-                                    addressRangeSecond.first,
+                                    memoryBlockFirst.first,
+                                    memoryBlockSecond.first,
                                     intersect);
                     Msg.showError(this, null, "Intersect error", message);
                     return;
@@ -472,11 +476,8 @@ public class FindExternalReferences extends GhidraScript {
             if (!intersectMemMap.containsKey(pathnameFirst)) {
                 Memory memoryFirst = programFirst.getMemory();
                 MemoryBlock[] memoryBlocksFirst = memoryFirst.getBlocks();
-                List<AddressRange> addressRangesFirst = new ArrayList<>();
-                for (MemoryBlock memBlock : memoryBlocksFirst) {
-                    addressRangesFirst.add(new AddressRangeImpl(memBlock.getStart(), memBlock.getEnd()));
-                }
-                intersectMemMap.put(pathnameFirst, addressRangesFirst);
+                List<MemoryBlock> memoryBlocksListFirst = Arrays.asList(memoryBlocksFirst);
+                intersectMemMap.put(pathnameFirst, memoryBlocksListFirst);
             }
         }
     }
@@ -485,23 +486,9 @@ public class FindExternalReferences extends GhidraScript {
         String pathname = program.getDomainFile().getPathname();
         if (!intersectMemMap.containsKey(pathname)) {
             Memory memory = program.getMemory();
-            MemoryBlock[] memoryBlocks = memory.getBlocks();
-            List<Pair<String, AddressRange>> addressRanges = new ArrayList<>();
-            for (MemoryBlock memBlock : memoryBlocks) {
-                addressRanges.add(
-                        new Pair<>(
-                                memBlock.getName(),
-                                new AddressRangeImpl(memBlock.getStart(), memBlock.getEnd())
-                        )
-                );
-            }
-            List<Pair<String, AddressRange>> memBlocksChoice =
-                    askChoices("Choose segments", pathname, addressRanges);
-            List<AddressRange> addressRangesChoice = new ArrayList<>();
-            for (Pair<String, AddressRange> choice : memBlocksChoice) {
-                addressRangesChoice.add(choice.second);
-            }
-            intersectMemMap.put(pathname, addressRangesChoice);
+            List<MemoryBlock> memoryBlocks = Arrays.asList(memory.getBlocks());
+            List<MemoryBlock> memoryBlocksChoice = askChoices("Choose segments", pathname, memoryBlocks);
+            intersectMemMap.put(pathname, memoryBlocksChoice);
         }
     }
 
