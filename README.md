@@ -9,6 +9,10 @@
         - [Instruction](#instruction)
     - [Set entry points in selection](#set-entry-points-in-selection)
         - [Instruction](#instruction-1)
+    - [Remove all references](#remove-all-references)
+        - [From address](#from-address)
+        - [To address](#to-address)
+        - [Instruction](#instruction-2)
 
 <!-- markdown-toc end -->
 
@@ -71,11 +75,30 @@ comment with value and annotation with link to external program).
 ## Set entry points in selection
 
 | :information_source: | [Source file](./SetEntryPointsInSelection.java) |
-| -----                | -----                                        |
+| -----                | -----                                           |
 
 Script set all labels (functions) in selection as Entry Point.
 
 ### Instruction
 
 1. Select needed functions through Functions window.
+2. Run the script.
+
+## Remove all references
+
+Use for clearing of the analysis results.
+
+### From address
+
+| :information_source: | [Source file](./RemoveAllReferencesFromAddress.java) |
+| -----                | -----                                                |
+
+### To address
+
+| :information_source: | [Source file](./RemoveAllReferencesToAddress.java) |
+| -----                | -----                                              |
+
+### Instruction
+
+1. Select addresses or set the cursor to one address.
 2. Run the script.
