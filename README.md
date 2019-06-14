@@ -102,3 +102,11 @@ Use for clearing of the analysis results.
 
 1. Select addresses or set the cursor to one address.
 2. Run the script.
+
+## FindMultipleLabels
+
+Print all symbols (and their addresses) with multiple labels. Maybe useful for
+Version Tracking session.
+
+| :information_source: | [Source file](./FindMultipleLabels.java) |
+| -----                | -----                                    |
