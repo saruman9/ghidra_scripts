@@ -13,6 +13,8 @@
         - [From address](#from-address)
         - [To address](#to-address)
         - [Instruction](#instruction-2)
+    - [FindMultipleLabels](#findmultiplelabels)
+    - [FindNeededFunctions](#findneededfunctions)
 
 <!-- markdown-toc end -->
 
@@ -110,3 +112,14 @@ Version Tracking session.
 
 | :information_source: | [Source file](./FindMultipleLabels.java) |
 | -----                | -----                                    |
+
+## FindNeededFunctions
+
+| :information_source: | [Source file](./FindNeededFunctions.java) |
+| -----                | -----                                    |
+
+Find all functions with parameters, which will be dereferenced.
+
+### Instruction
+
+1. Run the script.
