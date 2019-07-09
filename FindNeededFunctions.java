@@ -127,6 +127,7 @@ public class FindNeededFunctions extends GhidraScript {
             case PcodeOp.INT_SEXT:
             case PcodeOp.INT_RIGHT:
             case PcodeOp.INT_LEFT:
+            case PcodeOp.INT_SUB:
             case PcodeOp.INT_XOR:
             case PcodeOp.INT_AND:
             case PcodeOp.INT_OR:
