@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FindExternalReferences extends GhidraScript {
 
@@ -487,7 +488,17 @@ public class FindExternalReferences extends GhidraScript {
         if (!intersectMemMap.containsKey(pathname)) {
             Memory memory = program.getMemory();
             List<MemoryBlock> memoryBlocks = Arrays.asList(memory.getBlocks());
-            List<MemoryBlock> memoryBlocksChoice = askChoices("Choose segments", pathname, memoryBlocks);
+            List<String> memoryBlocksStrings = memoryBlocks
+                    .stream()
+                    .map(memoryBlock -> String
+                            .format("%s (%s)",
+                                    memoryBlock.getName(),
+                                    new AddressRangeImpl(memoryBlock.getStart(), memoryBlock.getEnd())))
+                    .collect(Collectors.toList());
+            List<MemoryBlock> memoryBlocksChoice = askChoices("Choose segments",
+                    pathname,
+                    memoryBlocks,
+                    memoryBlocksStrings);
             intersectMemMap.put(pathname, memoryBlocksChoice);
         }
     }
