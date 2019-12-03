@@ -30,6 +30,7 @@ import ghidra.program.model.listing.FunctionManager;
 import ghidra.program.model.listing.Library;
 import ghidra.program.model.listing.Listing;
 import ghidra.program.model.listing.Parameter;
+import ghidra.program.model.listing.ParameterImpl;
 import ghidra.program.model.listing.Program;
 import ghidra.program.model.mem.Memory;
 import ghidra.program.model.mem.MemoryBlock;
@@ -394,6 +395,19 @@ public class FindExternalReferences extends GhidraScript {
             Function.FunctionUpdateType updateType = Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS;
             SourceType sourceType = SourceType.IMPORTED;
             Parameter[] parameters = functionLibrary.getParameters();
+            List<Parameter> newParameters = new ArrayList<>();
+            for (Parameter parameter : parameters) {
+                try {
+                    Parameter newParam = new ParameterImpl(parameter, currentProgram);
+                    newParam.setDataType(parameter.getDataType(), sourceType);
+                    newParam.setName(parameter.getName(), sourceType);
+                    newParameters.add(newParam);
+                } catch (InvalidInputException | DuplicateNameException e) {
+                    Msg.showError(this, null, "Error of changing SourceType", e);
+                    isCancelled = true;
+                    return;
+                }
+            }
 
             String nameFunction = functionLibrary.getName();
             String callFixup = functionLibrary.getCallFixup();
@@ -407,10 +421,10 @@ public class FindExternalReferences extends GhidraScript {
                 functionTarget.setName(nameFunction, sourceType);
                 functionTarget.updateFunction(callingConventionName,
                         returnFunctionLibrary,
+                        newParameters,
                         updateType,
                         true,
-                        sourceType,
-                        parameters);
+                        sourceType);
                 functionTarget.setCallFixup(callFixup);
                 functionTarget.setCustomVariableStorage(hasCustomVariableStorage);
                 functionTarget.setInline(isInline);

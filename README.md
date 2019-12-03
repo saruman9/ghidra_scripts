@@ -28,7 +28,7 @@ Please read `${GHIDRA_HOME}/docs/GhidraClass/Intermediate/Scripting_withNotes.ht
 | :information_source: | [Source file](./FindExternalReferences.java) |
 | -----                | -----                                        |
 
-Script finds all references to the functions and data from all external programs (shared libraries), then creates additional memory blocks and transfer all info about functions (name, signature, additional info) and data (name, also create comment with value and annotation with link to external program).
+Script finds all references to the functions and data from all external programs (shared libraries), then creates additional memory blocks and transfer all info about functions (name, signature, additional info) and data (name, also create comment with value and annotation with link to external program). A source type of symbols will be `IMPORTED`, a source type of parameters will be `IMPORTED`, if parameters of the original function don't have `DEFAULT` source type, otherwise a source type will be `DEFAULT` too.
 
 ### Instruction
 
