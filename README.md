@@ -16,6 +16,8 @@
     - [FindMultipleLabels](#findmultiplelabels)
     - [FindNeededFunctions](#findneededfunctions)
         - [Instruction](#instruction-3)
+    - [BasicBlockModelExample](#basicblockmodelexample)
+        - [Instruction](#instruction-4)
 
 <!-- markdown-toc end -->
 
@@ -112,6 +114,17 @@ Print all symbols (and their addresses) with multiple labels. Maybe useful for V
 | -----                | -----                                    |
 
 Find all functions with parameters, which will be dereferenced.
+
+### Instruction
+
+1. Run the script.
+
+## BasicBlockModelExample
+
+| :information_source: | [Source file](./BasicBlockModelExample.java) |
+| -----                | -----                                        |
+
+Prints all basic blocks of the program (change the source code for printing an interesting information) with sources and destinations information (other basic blocks).
 
 ### Instruction
 
