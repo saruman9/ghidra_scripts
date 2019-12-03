@@ -20,19 +20,14 @@
 
 ## Installing scripts
 
-Please read
-`${GHIDRA_HOME}/docs/GhidraClass/Intermediate/Scripting_withNotes.html` and
-*Ghidra Script Manager* section of Help.
+Please read `${GHIDRA_HOME}/docs/GhidraClass/Intermediate/Scripting_withNotes.html` and *Ghidra Script Manager* section of Help.
 
 ## External references search
 
 | :information_source: | [Source file](./FindExternalReferences.java) |
 | -----                | -----                                        |
 
-Script finds all references to the functions and data from all external programs
-(shared libraries), then creates additional memory blocks and transfer all info
-about functions (name, signature, additional info) and data (name, also create
-comment with value and annotation with link to external program).
+Script finds all references to the functions and data from all external programs (shared libraries), then creates additional memory blocks and transfer all info about functions (name, signature, additional info) and data (name, also create comment with value and annotation with link to external program).
 
 ### Instruction
 
@@ -63,11 +58,9 @@ comment with value and annotation with link to external program).
 
 >>>
 
-- script will not change user-defined symbols (you should delete user-defined
-  symbols, if you want to import information from external symbols);
+- script will not change user-defined symbols (you should delete user-defined symbols, if you want to import information from external symbols);
 
-- you should look symbols with `Global` namespace (not external) for finding
-  xrefs to external functions and data (see Figure 4).
+- you should look symbols with `Global` namespace (not external) for finding xrefs to external functions and data (see Figure 4).
 
 >>>
 
@@ -107,8 +100,7 @@ Use for clearing of the analysis results.
 
 ## FindMultipleLabels
 
-Print all symbols (and their addresses) with multiple labels. Maybe useful for
-Version Tracking session.
+Print all symbols (and their addresses) with multiple labels. Maybe useful for Version Tracking session.
 
 | :information_source: | [Source file](./FindMultipleLabels.java) |
 | -----                | -----                                    |
