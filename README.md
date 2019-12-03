@@ -21,6 +21,8 @@
         - [Instruction](#instruction-5)
     - [Example of parsing PE header](#example-of-parsing-pe-header)
         - [Instruction](#instruction-6)
+    - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
+        - [Instruction](#instruction-7)
 
 <!-- markdown-toc end -->
 
@@ -147,3 +149,22 @@ The script parses PE header and print an entry point address (address of a valid
 ### Instruction
 
 1. Run the script.
+
+## Printing ASM/PCode/PCodeHigh/C
+
+| :information_source: | [Source file](./PrintPCode.java) |
+| -----                | -----                                        |
+
+The script should be used in headless mode. May be useful for debugging of a decompiler and writing Sleigh code. The script can print ASM code, PCode, PCodeHigh, decompiling C code (use arguments).
+
+:warning: **Warning:**
+
+>>>
+
+- the script can damage the target project, you should to watch the arguments for GhidraHeadless.
+
+>>>
+
+### Instruction
+
+See comments in the script file.
