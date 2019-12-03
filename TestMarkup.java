@@ -27,7 +27,8 @@ public class TestMarkup extends GhidraScript {
                 true,
                 true));
         for (int i = 0; i < instruction.getNumOperands(); i++) {
-            printf("op #%d: \"%s\"\n", i, codeUnitFormat.getOperandRepresentationString(instruction, i));
+            printf("op #%d: \"%s\"\n", i,
+                    codeUnitFormat.getOperandRepresentationString(instruction, i));
         }
     }
 }

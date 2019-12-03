@@ -34,7 +34,8 @@ public class FindMultipleLabels extends GhidraScript {
         SymbolIterator symbolIterator = symbolTable.getAllSymbols(true);
         while (symbolIterator.hasNext()) {
             Symbol symbol = symbolIterator.next();
-            List<Symbol> currentSymbols = addresses.getOrDefault(symbol.getAddress(), new ArrayList<>());
+            List<Symbol> currentSymbols =
+                    addresses.getOrDefault(symbol.getAddress(), new ArrayList<>());
             currentSymbols.add(symbol);
             addresses.put(symbol.getAddress(), currentSymbols);
         }

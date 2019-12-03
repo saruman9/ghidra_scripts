@@ -14,7 +14,8 @@ import java.util.Set;
 public class FindDirectReferences extends GhidraScript {
     @Override
     protected void run() throws Exception {
-        Set<Address> directReferences = ProgramMemoryUtil.findDirectReferences(currentProgram, 2, currentAddress, monitor);
+        Set<Address> directReferences =
+                ProgramMemoryUtil.findDirectReferences(currentProgram, 2, currentAddress, monitor);
         printf("%s\n", directReferences);
 
     }

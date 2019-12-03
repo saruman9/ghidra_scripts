@@ -53,7 +53,8 @@ public class PrintPCode extends HeadlessScript {
                 StringBuilder instructionsString = new StringBuilder();
                 while (instructionIterator.hasNext()) {
                     Instruction instruction = instructionIterator.next();
-                    instructionsString.append(String.format("%s\t%s\n", instruction.getAddress(), instruction));
+                    instructionsString.append(String
+                            .format("%s\t%s\n", instruction.getAddress(), instruction));
                 }
                 println(instructionsString.toString());
                 return;
@@ -61,7 +62,8 @@ public class PrintPCode extends HeadlessScript {
                 StringBuilder pcodeString = new StringBuilder();
                 while (instructionIterator.hasNext()) {
                     Instruction instruction = instructionIterator.next();
-                    pcodeString.append(String.format("%s\t%s\n", instruction.getAddress(), instruction));
+                    pcodeString.append(String
+                            .format("%s\t%s\n", instruction.getAddress(), instruction));
                     for (PcodeOp pcodeOp : instruction.getPcode()) {
                         pcodeString.append(String.format("\t%s\n", pcodeOp));
                     }
@@ -76,7 +78,8 @@ public class PrintPCode extends HeadlessScript {
         println("Decompilation completed: " + decompileResults.decompileCompleted());
         switch (typeOfPrint) {
             case "pcodehigh":
-                Iterator<PcodeOpAST> pcodeOpASTIterator = decompileResults.getHighFunction().getPcodeOps();
+                Iterator<PcodeOpAST> pcodeOpASTIterator =
+                        decompileResults.getHighFunction().getPcodeOps();
                 StringBuilder pcodeHighString = new StringBuilder();
                 while (pcodeOpASTIterator.hasNext()) {
                     PcodeOpAST pcodeOpAST = pcodeOpASTIterator.next();

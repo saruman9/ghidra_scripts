@@ -49,7 +49,8 @@ public class FindNeededFunctions extends GhidraScript {
         ifc.setSimplificationStyle("decompile");
 
         if (!ifc.openProgram(currentProgram)) {
-            throw new DecompileException("Decompiler", "Unable to initialize: " + ifc.getLastMessage());
+            throw new DecompileException("Decompiler",
+                    "Unable to initialize: " + ifc.getLastMessage());
         }
 
         Function currentFunction = functionManager.getFunctionContaining(currentAddress);
@@ -115,15 +116,19 @@ public class FindNeededFunctions extends GhidraScript {
                     Varnode storeDstVarnode = op.getInput(1);
                     Varnode storeSrcVarnode = op.getInput(2);
                     try {
-                        Pair<Varnode, Integer> varnodeDst = findRootOfVarnode(storeDstVarnode, 0, monitor);
-                        Pair<Varnode, Integer> varnodeSrc = findRootOfSrcVarnode(storeSrcVarnode, false, 0, monitor);
+                        Pair<Varnode, Integer> varnodeDst =
+                                findRootOfVarnode(storeDstVarnode, 0, monitor);
+                        Pair<Varnode, Integer> varnodeSrc =
+                                findRootOfSrcVarnode(storeSrcVarnode, false, 0, monitor);
                         if (monitor.isCancelled()) {
                             return;
                         }
                         if (varnodeDst != null && varnodeSrc != null) {
 //                            HighVariable highVariable = varnode.getHigh();
-                            int stackOffsetDst = varnodeDst.first.getHigh().getStorage().getStackOffset();
-                            int stackOffsetSrc = varnodeSrc.first.getHigh().getStorage().getStackOffset();
+                            int stackOffsetDst =
+                                    varnodeDst.first.getHigh().getStorage().getStackOffset();
+                            int stackOffsetSrc =
+                                    varnodeSrc.first.getHigh().getStorage().getStackOffset();
 //                            if ((stackOffsetDst == 0x4 || stackOffsetDst == 0x10) && (stackOffsetSrc == 0x4 || stackOffsetSrc == 0x10)) {
                             printf("%s, 0x%x, %d, %d, 0x%x, 0x%x\n",
                                     function.getName(),
@@ -149,12 +154,14 @@ public class FindNeededFunctions extends GhidraScript {
         DecompileResults res = ifc.decompileFunction(func, 300, null);
         HighFunction high = res.getHighFunction();
         if (high == null) {
-            printf("\nWARNING: %s ( %s ) returned null HighFunction\n", func.getName(), func.getEntryPoint());
+            printf("\nWARNING: %s ( %s ) returned null HighFunction\n", func.getName(),
+                    func.getEntryPoint());
         }
         return high;
     }
 
-    private Pair<Varnode, Integer> findRootOfVarnode(Varnode varnode, int jumps, TaskMonitor monitor) {
+    private Pair<Varnode, Integer> findRootOfVarnode(Varnode varnode, int jumps,
+                                                     TaskMonitor monitor) {
         if (monitor.isCancelled()) {
             return null;
         }
@@ -213,11 +220,13 @@ public class FindNeededFunctions extends GhidraScript {
             }
 
             default:
-                throw new NotYetImplementedException("Support for PcodeOp " + pcodeOp.toString() + " not implemented");
+                throw new NotYetImplementedException(
+                        "Support for PcodeOp " + pcodeOp.toString() + " not implemented");
         }
     }
 
-    private Pair<Varnode, Integer> findRootOfSrcVarnode(Varnode varnode, boolean isDereferenced, int jumps, TaskMonitor monitor) {
+    private Pair<Varnode, Integer> findRootOfSrcVarnode(Varnode varnode, boolean isDereferenced,
+                                                        int jumps, TaskMonitor monitor) {
         if (monitor.isCancelled()) {
             return null;
         }
@@ -271,7 +280,8 @@ public class FindNeededFunctions extends GhidraScript {
             case PcodeOp.PTRADD:
             case PcodeOp.PTRSUB:
             case PcodeOp.SUBPIECE: {
-                return findRootOfSrcVarnode(pcodeOp.getInput(0), isDereferenced, jumps + 1, monitor);
+                return findRootOfSrcVarnode(pcodeOp.getInput(0), isDereferenced, jumps + 1,
+                        monitor);
             }
             case PcodeOp.CALLIND:
             case PcodeOp.CALL: {
@@ -280,7 +290,8 @@ public class FindNeededFunctions extends GhidraScript {
             }
 
             default:
-                throw new NotYetImplementedException("Support for PcodeOp " + pcodeOp.toString() + " not implemented");
+                throw new NotYetImplementedException(
+                        "Support for PcodeOp " + pcodeOp.toString() + " not implemented");
         }
     }
 }

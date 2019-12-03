@@ -91,7 +91,8 @@ public class FindExternalReferences extends GhidraScript {
                 Library library = externalManager.getExternalLibrary(libraryName);
                 String libraryPath = library.getAssociatedProgramPath();
                 if (libraryPath == null) {
-                    printf("WARNING! You should set path for external library '%s'.\n", libraryName);
+                    printf("WARNING! You should set path for external library '%s'.\n",
+                            libraryName);
                     continue;
                 }
                 ProjectData projectData = state.getProject().getProjectData();
@@ -151,7 +152,8 @@ public class FindExternalReferences extends GhidraScript {
             List<MemoryBlock> memoryBlocks = intersect.getValue();
             int index = 0;
             for (MemoryBlock memoryBlock : memoryBlocks) {
-                if (!isExistReferences(new AddressSet(memoryBlock.getStart(), memoryBlock.getEnd()))) {
+                if (!isExistReferences(
+                        new AddressSet(memoryBlock.getStart(), memoryBlock.getEnd()))) {
                     continue;
                 }
                 String name = String.format("%s_%d", intersect.getKey(), index);
@@ -195,14 +197,16 @@ public class FindExternalReferences extends GhidraScript {
         }
     }
 
-    private void findAndCreateExternalSymbols(List<Program> librariesProgram) throws CancelledException {
+    private void findAndCreateExternalSymbols(List<Program> librariesProgram)
+            throws CancelledException {
         // Memory blocks and symbols should be sorted by address
         SymbolTable symbolTable = currentProgram.getSymbolTable();
         for (MemoryBlock memoryBlock : currentProgram.getMemory().getBlocks()) {
             String sourceName = memoryBlock.getSourceName();
             if (sourceName != null && sourceName.equals("External References resolver")) {
                 SymbolIterator symbolIterator = symbolTable.getAllSymbols(true);
-                AddressRange addressRange = new AddressRangeImpl(memoryBlock.getStart(), memoryBlock.getEnd());
+                AddressRange addressRange =
+                        new AddressRangeImpl(memoryBlock.getStart(), memoryBlock.getEnd());
                 for (Symbol currentSymbol : symbolIterator) {
                     if (isCancelled) {
                         return;
@@ -232,7 +236,8 @@ public class FindExternalReferences extends GhidraScript {
         }
     }
 
-    private void createExternalSymbols(Symbol symbolTarget, List<Program> librariesProgram) throws CancelledException {
+    private void createExternalSymbols(Symbol symbolTarget, List<Program> librariesProgram)
+            throws CancelledException {
         Address addressTarget = symbolTarget.getAddress();
         String pathnameLibrary = null;
         Program programLibrary = null;
@@ -298,7 +303,8 @@ public class FindExternalReferences extends GhidraScript {
         Data dataLibrary = listingLibrary.getDataAt(addressLibrary);
         if (dataLibrary == null) {
             BookmarkManager bookmarkManager = currentProgram.getBookmarkManager();
-            String message = String.format("Unable to resolve data at %s", symbolLibrary.getAddress());
+            String message =
+                    String.format("Unable to resolve data at %s", symbolLibrary.getAddress());
             bookmarkManager.setBookmark(symbolTarget.getAddress(),
                     "Warning",
                     "Bad data",
@@ -392,7 +398,8 @@ public class FindExternalReferences extends GhidraScript {
 
             String callingConventionName = functionLibrary.getCallingConventionName();
             Parameter returnFunctionLibrary = functionLibrary.getReturn();
-            Function.FunctionUpdateType updateType = Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS;
+            Function.FunctionUpdateType updateType =
+                    Function.FunctionUpdateType.DYNAMIC_STORAGE_FORMAL_PARAMS;
             SourceType sourceType = SourceType.IMPORTED;
             Parameter[] parameters = functionLibrary.getParameters();
             List<Parameter> newParameters = new ArrayList<>();
@@ -450,10 +457,12 @@ public class FindExternalReferences extends GhidraScript {
             for (int j = i + 1; j < memoryBlocks.size(); j++) {
                 Pair<String, MemoryBlock> memoryBlockFirst = memoryBlocks.get(i);
                 Pair<String, MemoryBlock> memoryBlockSecond = memoryBlocks.get(j);
-                AddressRange addressRangeFirst = new AddressRangeImpl(memoryBlockFirst.second.getStart(),
-                        memoryBlockFirst.second.getEnd());
-                AddressRange addressRangeSecond = new AddressRangeImpl(memoryBlockSecond.second.getStart(),
-                        memoryBlockSecond.second.getEnd());
+                AddressRange addressRangeFirst =
+                        new AddressRangeImpl(memoryBlockFirst.second.getStart(),
+                                memoryBlockFirst.second.getEnd());
+                AddressRange addressRangeSecond =
+                        new AddressRangeImpl(memoryBlockSecond.second.getStart(),
+                                memoryBlockSecond.second.getEnd());
                 AddressRange intersect = addressRangeFirst.intersect(addressRangeSecond);
                 if (intersect != null) {
                     isCancelled = true;
@@ -480,7 +489,8 @@ public class FindExternalReferences extends GhidraScript {
                 Program programSecond = programs.get(j);
                 Address addressMinSecond = programSecond.getMinAddress();
                 Address addressMaxSecond = programSecond.getMaxAddress();
-                AddressRange addressRangeSecond = new AddressRangeImpl(addressMinSecond, addressMaxSecond);
+                AddressRange addressRangeSecond =
+                        new AddressRangeImpl(addressMinSecond, addressMaxSecond);
 
                 AddressRange intersect = addressRangeFirst.intersect(addressRangeSecond);
                 if (intersect != null) {
@@ -507,7 +517,8 @@ public class FindExternalReferences extends GhidraScript {
                     .map(memoryBlock -> String
                             .format("%s (%s)",
                                     memoryBlock.getName(),
-                                    new AddressRangeImpl(memoryBlock.getStart(), memoryBlock.getEnd())))
+                                    new AddressRangeImpl(memoryBlock.getStart(),
+                                            memoryBlock.getEnd())))
                     .collect(Collectors.toList());
             List<MemoryBlock> memoryBlocksChoice = askChoices("Choose segments",
                     pathname,

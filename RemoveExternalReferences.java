@@ -30,10 +30,12 @@ public class RemoveExternalReferences extends GhidraScript {
         ReferenceManager referenceManager = currentProgram.getReferenceManager();
 
         for (String libraryNames : externalManager.getExternalLibraryNames()) {
-            ExternalLocationIterator externalLocationIterator = externalManager.getExternalLocations(libraryNames);
+            ExternalLocationIterator externalLocationIterator =
+                    externalManager.getExternalLocations(libraryNames);
             while (externalLocationIterator.hasNext()) {
                 ExternalLocation externalLocation = externalLocationIterator.next();
-                for (Reference referenceExternal : referenceManager.getReferencesTo(externalLocation.getExternalSpaceAddress())) {
+                for (Reference referenceExternal : referenceManager
+                        .getReferencesTo(externalLocation.getExternalSpaceAddress())) {
                     referenceManager.addMemoryReference(referenceExternal.getFromAddress(),
                             externalLocation.getAddress(),
                             referenceExternal.getReferenceType(),

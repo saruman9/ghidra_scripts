@@ -43,8 +43,9 @@ public class GetEntryPoints extends GhidraScript {
                 currentProgram.getImageBase());
         PortableExecutable portableExecutable = null;
         try {
-            portableExecutable = PortableExecutable.createPortableExecutable(RethrowContinuesFactory.INSTANCE,
-                    byteProvider, PortableExecutable.SectionLayout.MEMORY);
+            portableExecutable =
+                    PortableExecutable.createPortableExecutable(RethrowContinuesFactory.INSTANCE,
+                            byteProvider, PortableExecutable.SectionLayout.MEMORY);
         } catch (IOException e) {
             Msg.error(this, e.toString());
             byteProvider.close();

@@ -23,25 +23,33 @@ public class BasicBlockModelExample extends GhidraScript {
         BasicBlockModel basicBlockModel = new BasicBlockModel(currentProgram);
         FunctionManager functionManager = currentProgram.getFunctionManager();
         for (Function currentFunction : functionManager.getFunctions(true)) {
-            printf("Function: %s ( %s )\n", currentFunction.getName(), currentFunction.getEntryPoint());
-            CodeBlockIterator codeBlockIterator = basicBlockModel.getCodeBlocksContaining(currentFunction.getBody(), monitor);
+            printf("Function: %s ( %s )\n", currentFunction.getName(),
+                    currentFunction.getEntryPoint());
+            CodeBlockIterator codeBlockIterator =
+                    basicBlockModel.getCodeBlocksContaining(currentFunction.getBody(), monitor);
             while (codeBlockIterator.hasNext()) {
                 CodeBlock codeBlock = codeBlockIterator.next();
-                printf("\n\tCode Block: %s ( %s )\n", codeBlock.getName(), codeBlock.getFirstStartAddress());
+                printf("\n\tCode Block: %s ( %s )\n", codeBlock.getName(),
+                        codeBlock.getFirstStartAddress());
 
-                CodeBlockReferenceIterator codeBlockReferenceSourcesIterator = codeBlock.getSources(monitor);
+                CodeBlockReferenceIterator codeBlockReferenceSourcesIterator =
+                        codeBlock.getSources(monitor);
                 printf("\t\tSources:\n");
                 while (codeBlockReferenceSourcesIterator.hasNext()) {
-                    CodeBlockReference codeBlockReference = codeBlockReferenceSourcesIterator.next();
+                    CodeBlockReference codeBlockReference =
+                            codeBlockReferenceSourcesIterator.next();
                     CodeBlock codeBlockSource = codeBlockReference.getSourceBlock();
-                    printf("\t\t%s ( %s )\n", codeBlockSource.getName(), codeBlockSource.getFirstStartAddress());
+                    printf("\t\t%s ( %s )\n", codeBlockSource.getName(),
+                            codeBlockSource.getFirstStartAddress());
                 }
-                CodeBlockReferenceIterator codeBlockReferenceDestsIterator = codeBlock.getDestinations(monitor);
+                CodeBlockReferenceIterator codeBlockReferenceDestsIterator =
+                        codeBlock.getDestinations(monitor);
                 printf("\n\t\tDestinations:\n");
                 while (codeBlockReferenceDestsIterator.hasNext()) {
                     CodeBlockReference codeBlockReference = codeBlockReferenceDestsIterator.next();
                     CodeBlock codeBlockDest = codeBlockReference.getDestinationBlock();
-                    printf("\t\t%s ( %s )\n", codeBlockDest.getName(), codeBlockDest.getFirstStartAddress());
+                    printf("\t\t%s ( %s )\n", codeBlockDest.getName(),
+                            codeBlockDest.getFirstStartAddress());
                 }
 
                 Listing listing = currentProgram.getListing();
