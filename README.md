@@ -14,10 +14,11 @@
         - [To address](#to-address)
         - [Instruction](#instruction-2)
     - [FindMultipleLabels](#findmultiplelabels)
-    - [FindNeededFunctions](#findneededfunctions)
         - [Instruction](#instruction-3)
-    - [BasicBlockModelExample](#basicblockmodelexample)
+    - [FindNeededFunctions](#findneededfunctions)
         - [Instruction](#instruction-4)
+    - [BasicBlockModelExample](#basicblockmodelexample)
+        - [Instruction](#instruction-5)
 
 <!-- markdown-toc end -->
 
@@ -108,10 +109,14 @@ Print all symbols (and their addresses) with multiple labels. Maybe useful for V
 | :information_source: | [Source file](./FindMultipleLabels.java) |
 | -----                | -----                                    |
 
+### Instruction
+
+1. Run the script.
+
 ## FindNeededFunctions
 
 | :information_source: | [Source file](./FindNeededFunctions.java) |
-| -----                | -----                                    |
+| -----                | -----                                     |
 
 Find all functions with parameters, which will be dereferenced.
 
