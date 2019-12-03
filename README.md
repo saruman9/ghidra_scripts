@@ -15,6 +15,7 @@
         - [Instruction](#instruction-2)
     - [FindMultipleLabels](#findmultiplelabels)
     - [FindNeededFunctions](#findneededfunctions)
+        - [Instruction](#instruction-3)
 
 <!-- markdown-toc end -->
 
