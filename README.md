@@ -19,6 +19,8 @@
         - [Instruction](#instruction-4)
     - [BasicBlockModelExample](#basicblockmodelexample)
         - [Instruction](#instruction-5)
+    - [Example of parsing PE header](#example-of-parsing-pe-header)
+        - [Instruction](#instruction-6)
 
 <!-- markdown-toc end -->
 
@@ -130,6 +132,17 @@ Find all functions with parameters, which will be dereferenced.
 | -----                | -----                                        |
 
 Prints all basic blocks of the program (change the source code for printing an interesting information) with sources and destinations information (other basic blocks).
+
+### Instruction
+
+1. Run the script.
+
+## Example of parsing PE header
+
+| :information_source: | [Source file](./GetEntryPoints.java) |
+| -----                | -----                                        |
+
+The script parses PE header and print an entry point address (address of a valid function) from optional header.
 
 ### Instruction
 
