@@ -1,5 +1,5 @@
 /*
- * analyzeHeadless . temp.gpr -import $BINARY_NAME -preScript PrintPCode.java $FUNCTION_ADDRESS $TYPE -deleteProject -noanalysis
+ * analyzeHeadless . temp.gpr -import $BINARY_NAME -preScript PrintCodeHeadless.java $FUNCTION_ADDRESS $TYPE -deleteProject -noanalysis
  */
 
 import ghidra.app.decompiler.DecompInterface;
@@ -26,7 +26,9 @@ public class PrintCodeHeadless extends HeadlessScript {
 
         String[] args = getScriptArgs();
         if (args.length < 2) {
-            Msg.error(this, "USAGE: PrintPCode.java ADDRESS [asm,pcode,pcodehigh,c]");
+            Msg.error(this,
+                      String.format("USAGE: %s.java ADDRESS [asm,pcode,pcodehigh,c]",
+                                    this.getClass().getSimpleName()));
             return;
         }
         String typeOfPrint = args[1];
@@ -54,7 +56,9 @@ public class PrintCodeHeadless extends HeadlessScript {
                 while (instructionIterator.hasNext()) {
                     Instruction instruction = instructionIterator.next();
                     instructionsString.append(String
-                            .format("%s\t%s\n", instruction.getAddress(), instruction));
+                                                      .format("%s\t%s\n",
+                                                              instruction.getAddress(),
+                                                              instruction));
                 }
                 println(instructionsString.toString());
                 return;
@@ -63,7 +67,9 @@ public class PrintCodeHeadless extends HeadlessScript {
                 while (instructionIterator.hasNext()) {
                     Instruction instruction = instructionIterator.next();
                     pcodeString.append(String
-                            .format("%s\t%s\n", instruction.getAddress(), instruction));
+                                               .format("%s\t%s\n",
+                                                       instruction.getAddress(),
+                                                       instruction));
                     for (PcodeOp pcodeOp : instruction.getPcode()) {
                         pcodeString.append(String.format("\t%s\n", pcodeOp));
                     }
