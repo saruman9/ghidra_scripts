@@ -23,6 +23,8 @@
         - [Instruction](#instruction-6)
     - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
         - [Instruction](#instruction-7)
+    - [Printing PCode](#printing-pcode)
+        - [Instruction](#instruction-8)
 
 <!-- markdown-toc end -->
 
@@ -142,7 +144,7 @@ Prints all basic blocks of the program (change the source code for printing an i
 ## Example of parsing PE header
 
 | :information_source: | [Source file](./GetEntryPoints.java) |
-| -----                | -----                                        |
+| -----                | -----                                |
 
 The script parses PE header and print an entry point address (address of a valid function) from optional header.
 
@@ -152,8 +154,8 @@ The script parses PE header and print an entry point address (address of a valid
 
 ## Printing ASM/PCode/PCodeHigh/C
 
-| :information_source: | [Source file](./PrintPCode.java) |
-| -----                | -----                                        |
+| :information_source: | [Source file](./PrintCodeHeadless.java) |
+| -----                | -----                                   |
 
 The script should be used in headless mode. May be useful for debugging of a decompiler and writing Sleigh code. The script can print ASM code, PCode, PCodeHigh, decompiling C code (use arguments).
 
@@ -168,3 +170,14 @@ The script should be used in headless mode. May be useful for debugging of a dec
 ### Instruction
 
 See comments in the script file.
+
+## Printing PCode
+
+| :information_source: | [Source file](./PrintPCode.java) |
+| -----                | -----                            |
+
+The script prints high PCode to console. May be useful for debugging of a decompiler. You should known, that the AST of high PCode and the AST of any varnode may be different in a scope of the same function.
+
+### Instruction
+
+1. Run the script.
