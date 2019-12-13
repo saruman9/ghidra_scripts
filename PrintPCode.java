@@ -19,21 +19,25 @@ public class PrintPCode extends GhidraScript {
     public void run() throws Exception {
 
         DecompInterface ifc = new DecompInterface();
-        Function function = currentProgram.getFunctionManager()
-                                          .getFunctionContaining(currentAddress);
-
-        println(String.format("Decompiling %s at %s",
-                              function.getName(),
-                              function.getEntryPoint()));
-        ifc.openProgram(currentProgram);
-        DecompileResults decompileResults = ifc.decompileFunction(function, 30, monitor);
-        println("Decompilation completed: " + decompileResults.decompileCompleted());
-        Iterator<PcodeOpAST> pcodeOpASTIterator = decompileResults.getHighFunction().getPcodeOps();
-        StringBuilder pcodeHighString = new StringBuilder();
-        while (pcodeOpASTIterator.hasNext()) {
-            PcodeOpAST pcodeOpAST = pcodeOpASTIterator.next();
-            pcodeHighString.append(String.format("%s\n", pcodeOpAST));
+        try {
+            Function function = currentProgram.getFunctionManager()
+                                              .getFunctionContaining(currentAddress);
+            println(String.format("Decompiling %s at %s",
+                                  function.getName(),
+                                  function.getEntryPoint()));
+            ifc.openProgram(currentProgram);
+            DecompileResults decompileResults = ifc.decompileFunction(function, 30, monitor);
+            println("Decompilation completed: " + decompileResults.decompileCompleted());
+            Iterator<PcodeOpAST> pcodeOpASTIterator = decompileResults.getHighFunction()
+                                                                      .getPcodeOps();
+            StringBuilder pcodeHighString = new StringBuilder();
+            while (pcodeOpASTIterator.hasNext()) {
+                PcodeOpAST pcodeOpAST = pcodeOpASTIterator.next();
+                pcodeHighString.append(String.format("%s\n", pcodeOpAST));
+            }
+            println(pcodeHighString.toString());
+        } finally {
+            ifc.dispose();
         }
-        println(pcodeHighString.toString());
     }
 }
