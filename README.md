@@ -181,3 +181,16 @@ The script prints high PCode to console. May be useful for debugging of a decomp
 ### Instruction
 
 1. Run the script.
+
+## Set default calling convention for functions in Selection
+
+| :information_source: | [Source file](./SetDefaultCallingConvInSelection.java) |
+| -----                | -----                                                  |
+
+The script set default convention (see Language ID) for all functions in the selection.
+
+### Instruction
+
+1. Select needed functions. I recommends do it through Functions window, where you can sort and filter functions.
+
+1. Run the script.
