@@ -25,6 +25,8 @@
         - [Instruction](#instruction-7)
     - [Printing PCode](#printing-pcode)
         - [Instruction](#instruction-8)
+    - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
+        - [Instruction](#instruction-9)
 
 <!-- markdown-toc end -->
 
