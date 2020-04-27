@@ -142,10 +142,8 @@ public class FindNeededFunctions extends GhidraScript {
                         }
                         if (varnodeDst != null && varnodeSrc != null) {
 //                            HighVariable highVariable = varnode.getHigh();
-                            int stackOffsetDst =
-                                    varnodeDst.first.getHigh().getStorage().getStackOffset();
-                            int stackOffsetSrc =
-                                    varnodeSrc.first.getHigh().getStorage().getStackOffset();
+                            int stackOffsetDst = varnodeDst.first.getHigh().getOffset();
+                            int stackOffsetSrc = varnodeSrc.first.getHigh().getOffset();
 //                            if ((stackOffsetDst == 0x4 || stackOffsetDst == 0x10) && (stackOffsetSrc == 0x4 || stackOffsetSrc == 0x10)) {
                             printf("%s, 0x%x, %d, %d, 0x%x, 0x%x\n",
                                    function.getName(),
