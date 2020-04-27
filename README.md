@@ -27,6 +27,8 @@
         - [Instruction](#instruction-8)
     - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
         - [Instruction](#instruction-9)
+    - [Find references of the field of a structure](#find-references-of-the-field-of-a-structure)
+        - [Instruction](#instruction-10)
 
 <!-- markdown-toc end -->
 
@@ -196,3 +198,16 @@ The script set default convention (see Language ID) for all functions in the sel
 1. Select needed functions. I recommends do it through Functions window, where you can sort and filter functions.
 
 1. Run the script.
+
+## Find references of the field of a structure
+
+| :information_source: | [Source file](./FindRefsField.java) |
+| -----                | -----                               |
+
+The script finds all references to the field of a structure.
+
+### Instruction
+
+1. Set cursor at the field of a structure in the Decompiler window.
+1. Run the script.
+
