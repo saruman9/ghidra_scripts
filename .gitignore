@@ -1,2 +1,10 @@
+# IDEA
 .idea
 *.iml
+
+# Gradle
+.gradle
+/build/
+gradle
+gradlew
+gradlew.bat
