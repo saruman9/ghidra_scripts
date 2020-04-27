@@ -29,7 +29,7 @@ import ghidra.program.model.listing.FunctionManager;
 import ghidra.program.model.listing.Program;
 import ghidra.program.model.pcode.FunctionPrototype;
 import ghidra.program.model.pcode.HighFunction;
-import ghidra.program.model.pcode.HighVariable;
+import ghidra.program.model.pcode.HighSymbol;
 import ghidra.program.model.pcode.PcodeOp;
 import ghidra.program.model.pcode.Varnode;
 import ghidra.program.model.symbol.Reference;
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FunctionCallGraph extends GhidraScript {
+
     @Override
     protected void run() throws Exception {
         Function currentFunction = currentProgram.getFunctionManager()
@@ -157,14 +158,15 @@ class AcyclicCallGraphWithParamsBuilder {
             decompInterface.openProgram(sourceFunction.getProgram());
             DecompileResults decompileResults = decompInterface.decompileFunction(targetFunction,
                                                                                   30,
-                                                                                  monitor);
+                                                                                  monitor
+            );
             HighFunction highTargetFunction = decompileResults.getHighFunction();
-            List<HighVariable> variableList = getHighParameters(highTargetFunction);
+            List<HighSymbol> variableList = getHighParameters(highTargetFunction);
 
             for (int parameterNumTarget = 0; parameterNumTarget < variableList.size();
                  parameterNumTarget++) {
-                HighVariable highVariable = variableList.get(parameterNumTarget);
-                Varnode[] instances = highVariable.getInstances();
+                HighSymbol highSymbol = variableList.get(parameterNumTarget);
+                Varnode[] instances = highSymbol.getHighVariable().getInstances();
                 for (Varnode varnodeTarget : instances) {
                     Iterator<PcodeOp> pcodeOpIterator = varnodeTarget.getDescendants();
                     while (pcodeOpIterator.hasNext()) {
@@ -203,8 +205,8 @@ class AcyclicCallGraphWithParamsBuilder {
         return parameterDependencies;
     }
 
-    private List<HighVariable> getHighParameters(HighFunction highFunction) {
-        List<HighVariable> highParameters = new ArrayList<>();
+    private List<HighSymbol> getHighParameters(HighFunction highFunction) {
+        List<HighSymbol> highParameters = new ArrayList<>();
 
         if (highFunction == null) {
             ghidraScript.printerr("Can't get highFunction");
