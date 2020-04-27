@@ -50,9 +50,10 @@ public class FindNeededFunctions extends GhidraScript {
     protected void run() throws Exception {
         if (currentProgram == null) {
             Msg.showError(this,
-                    null,
-                    "Error",
-                    "This script should be run from a tool with open program.");
+                          null,
+                          "Error",
+                          "This script should be run from a tool with open program."
+            );
             return;
         }
 
@@ -65,7 +66,8 @@ public class FindNeededFunctions extends GhidraScript {
 
         if (!ifc.openProgram(currentProgram)) {
             throw new DecompileException("Decompiler",
-                    "Unable to initialize: " + ifc.getLastMessage());
+                                         "Unable to initialize: " + ifc.getLastMessage()
+            );
         }
 
         Function currentFunction = functionManager.getFunctionContaining(currentAddress);
@@ -146,12 +148,13 @@ public class FindNeededFunctions extends GhidraScript {
                                     varnodeSrc.first.getHigh().getStorage().getStackOffset();
 //                            if ((stackOffsetDst == 0x4 || stackOffsetDst == 0x10) && (stackOffsetSrc == 0x4 || stackOffsetSrc == 0x10)) {
                             printf("%s, 0x%x, %d, %d, 0x%x, 0x%x\n",
-                                    function.getName(),
-                                    function.getEntryPoint().getOffset(),
-                                    function.getEntryPoint().getOffset(),
-                                    function.getBody().getNumAddresses(),
-                                    stackOffsetSrc,
-                                    stackOffsetDst);
+                                   function.getName(),
+                                   function.getEntryPoint().getOffset(),
+                                   function.getEntryPoint().getOffset(),
+                                   function.getBody().getNumAddresses(),
+                                   stackOffsetSrc,
+                                   stackOffsetDst
+                            );
 //                            }
 //                            printf("%s, %s\n", highVariable, highVariable.getStorage().getStackOffset());
 //                            return;
@@ -170,7 +173,8 @@ public class FindNeededFunctions extends GhidraScript {
         HighFunction high = res.getHighFunction();
         if (high == null) {
             printf("\nWARNING: %s ( %s ) returned null HighFunction\n", func.getName(),
-                    func.getEntryPoint());
+                   func.getEntryPoint()
+            );
         }
         return high;
     }
@@ -296,7 +300,8 @@ public class FindNeededFunctions extends GhidraScript {
             case PcodeOp.PTRSUB:
             case PcodeOp.SUBPIECE: {
                 return findRootOfSrcVarnode(pcodeOp.getInput(0), isDereferenced, jumps + 1,
-                        monitor);
+                                            monitor
+                );
             }
             case PcodeOp.CALLIND:
             case PcodeOp.CALL: {
