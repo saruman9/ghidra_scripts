@@ -55,10 +55,12 @@ public class FunctionCallGraph extends GhidraScript {
                 currentProgram,
                 currentFunction,
                 this,
-                monitor);
+                monitor
+        );
         AbstractDependencyGraph<FunctionWithParams> graph = builder.getDependencyGraph();
-        FunctionWithParams firstIndependentValue = (FunctionWithParams) graph.getAllIndependentValues()
-                                                                             .toArray()[0];
+        FunctionWithParams firstIndependentValue =
+                (FunctionWithParams) graph.getAllIndependentValues()
+                                          .toArray()[0];
         println(graph.getAllIndependentValues().toString());
         printDependencyGraph(graph, firstIndependentValue, 0);
     }
@@ -66,7 +68,8 @@ public class FunctionCallGraph extends GhidraScript {
     private void printDependencyGraph(AbstractDependencyGraph<FunctionWithParams> graph,
                                       FunctionWithParams dependentValue,
                                       int depth) {
-        for (FunctionWithParams currentFunctionWithParams : graph.getDependentValues(dependentValue)) {
+        for (FunctionWithParams currentFunctionWithParams : graph
+                .getDependentValues(dependentValue)) {
             int i = depth;
             while (i > 0) {
                 printf("    ");
@@ -125,15 +128,18 @@ class AcyclicCallGraphWithParamsBuilder {
             if (!reference.getReferenceType().isCall()) {
                 continue;
             }
-            Function functionReferenced = functionManager.getFunctionContaining(reference.getFromAddress());
+            Function functionReferenced =
+                    functionManager.getFunctionContaining(reference.getFromAddress());
             if (functionReferenced == null) {
                 ghidraScript.printerr(String.format("Function error: %s",
-                                                    reference.getFromAddress()));
+                                                    reference.getFromAddress()
+                ));
                 continue;
             }
             FunctionWithParams referenceFunctionWithParams = new FunctionWithParams(
                     functionReferenced,
-                    findParametersDependence(functionWithParams.getFunction(), functionReferenced));
+                    findParametersDependence(functionWithParams.getFunction(), functionReferenced)
+            );
             graph.addDependency(referenceFunctionWithParams, functionWithParams);
             fillGraph(graph, referenceFunctionWithParams, visitedFunctions, depth + 1);
         }
@@ -176,9 +182,11 @@ class AcyclicCallGraphWithParamsBuilder {
                                  parameterNumSource++) {
                                 Varnode varnodeSource = inputs[parameterNumSource];
                                 if (varnodeSource.equals(varnodeTarget)) {
-                                    ParameterDependence parameterDependence = parameterDependencies.get(
-                                            parameterNumSource - 1);
-                                    List<Integer> parameters = parameterDependence.getDestinationParameters();
+                                    ParameterDependence parameterDependence =
+                                            parameterDependencies.get(
+                                                    parameterNumSource - 1);
+                                    List<Integer> parameters =
+                                            parameterDependence.getDestinationParameters();
                                     if (!parameters.contains(parameterNumTarget)) {
                                         parameters.add(parameterNumTarget);
                                     }
@@ -238,7 +246,7 @@ class FunctionWithParams {
         }
         FunctionWithParams that = (FunctionWithParams) o;
         return Objects.equals(function, that.function) &&
-                Objects.equals(parameters, that.parameters);
+               Objects.equals(parameters, that.parameters);
     }
 
     @Override
@@ -249,7 +257,7 @@ class FunctionWithParams {
     @Override
     public String toString() {
         return "FunctionWithParams{function=" + function + " ( " + function.getEntryPoint() +
-                " ), parameters=" + parameters + '}';
+               " ), parameters=" + parameters + '}';
     }
 }
 
