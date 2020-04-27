@@ -1,6 +1,6 @@
-//Find all symbols with multiple labels. Maybe useful for Version Tracking session.
+//Parses PE header and print an entry point address (address of a valid function) from optional header.
 //@author saruman9
-//@category Symbol
+//@category Windows
 //@keybinding ctrl 1
 //@menupath
 //@toolbar
@@ -30,14 +30,6 @@ public class GetEntryPoints extends GhidraScript {
                     "This script should be run from a tool with open program.");
             return;
         }
-//        SymbolTable symbolTable = currentProgram.getSymbolTable();
-//        FunctionManager functionManager = currentProgram.getFunctionManager();
-//        AddressIterator addressIterator = symbolTable.getExternalEntryPointIterator();
-//        while (addressIterator.hasNext()) {
-//            Address address = addressIterator.next();
-//            Function function = functionManager.getFunctionContaining(address);
-//            printf("%s\n", function);
-//        }
 
         ByteProvider byteProvider = new MemoryByteProvider(currentProgram.getMemory(),
                 currentProgram.getImageBase());
