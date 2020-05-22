@@ -75,16 +75,17 @@ import java.util.stream.Collectors;
 
 public class FindExternalReferences extends GhidraScript {
 
-    private HashMap<String, List<MemoryBlock>> intersectMemMap = new HashMap<>();
+    private final HashMap<String, List<MemoryBlock>> intersectMemMap = new HashMap<>();
     private boolean isCancelled = false;
 
     @Override
     protected void run() throws Exception {
         if (currentProgram == null) {
             Msg.showError(this,
-                    null,
-                    "Error",
-                    "This script should be run from a tool with open program.");
+                          null,
+                          "Error",
+                          "This script should be run from a tool with open program."
+            );
             return;
         }
 
@@ -107,7 +108,8 @@ public class FindExternalReferences extends GhidraScript {
                 String libraryPath = library.getAssociatedProgramPath();
                 if (libraryPath == null) {
                     printf("WARNING! You should set path for external library '%s'.\n",
-                            libraryName);
+                           libraryName
+                    );
                     continue;
                 }
                 ProjectData projectData = state.getProject().getProjectData();
@@ -122,7 +124,8 @@ public class FindExternalReferences extends GhidraScript {
                 } else {
                     if (isExistReferences(new AddressSet(
                             libraryProgram.getMinAddress(),
-                            libraryProgram.getMaxAddress()))) {
+                            libraryProgram.getMaxAddress()
+                    ))) {
                         librariesProgram.add(libraryProgram);
                     }
                 }
@@ -173,28 +176,31 @@ public class FindExternalReferences extends GhidraScript {
                 }
                 String name = String.format("%s_%d", intersect.getKey(), index);
                 try {
-                    MemoryBlock newMemoryBlock = memory.createUninitializedBlock(name,
-                            memoryBlock.getStart(),
-                            memoryBlock.getSize(),
-                            false);
+                    MemoryBlock newMemoryBlock =
+                            memory.createUninitializedBlock(name,
+                                                            memoryBlock.getStart(),
+                                                            memoryBlock.getSize(),
+                                                            false
+                            );
                     newMemoryBlock.setExecute(memoryBlock.isExecute());
                     newMemoryBlock.setWrite(memoryBlock.isWrite());
                     newMemoryBlock.setSourceName("External References resolver");
                     newMemoryBlock.setComment("NOTE: This block is artificial and is used" +
-                            " to make external references work correctly");
-                } catch (DuplicateNameException
-                        | AddressOverflowException e) {
+                                              " to make external references work correctly");
+                } catch (DuplicateNameException | AddressOverflowException e) {
                     Msg.showError(this, null, "Error of creating memory block", e);
                     isCancelled = true;
                     return;
                 } catch (LockException e) {
                     // TODO: Move the checking over memory blocks creation
                     if (!isShownWarning) {
-                        boolean bContinue = askYesNo("Without exclusive check out",
-                                "You don't have exclusive check out. " +
-                                        "Only existed artificial memory blocks will be analyzed!\n" +
-                                        "Exclusive check out required for first run of the script. " +
-                                        "Do you want to continue analysis?");
+                        boolean bContinue =
+                                askYesNo("Without exclusive check out",
+                                         "You don't have exclusive check out. " +
+                                         "Only existed artificial memory blocks will be analyzed!\n" +
+                                         "Exclusive check out required for first run of the script. " +
+                                         "Do you want to continue analysis?"
+                                );
                         if (!bContinue) {
                             monitor.cancel();
                             return;
@@ -302,9 +308,10 @@ public class FindExternalReferences extends GhidraScript {
             BookmarkManager bookmarkManagerTarget = currentProgram.getBookmarkManager();
             for (Reference reference : referencesTarget) {
                 bookmarkManagerTarget.removeBookmarks(new AddressSet(reference.getFromAddress()),
-                        "Error",
-                        "Bad Instruction",
-                        monitor);
+                                                      "Error",
+                                                      "Bad Instruction",
+                                                      monitor
+                );
             }
         }
     }
@@ -321,9 +328,10 @@ public class FindExternalReferences extends GhidraScript {
             String message =
                     String.format("Unable to resolve data at %s", symbolLibrary.getAddress());
             bookmarkManager.setBookmark(symbolTarget.getAddress(),
-                    "Warning",
-                    "Bad data",
-                    message);
+                                        "Warning",
+                                        "Bad data",
+                                        message
+            );
             return;
         }
         DataType dataTypeLibrary = dataLibrary.getDataType();
@@ -338,7 +346,8 @@ public class FindExternalReferences extends GhidraScript {
                     domainFileLibrary.getName(),
                     nameSymbolLibrary,
                     addressLibrary,
-                    SourceType.IMPORTED);
+                    SourceType.IMPORTED
+            );
             externalLocation.setDataType(dataTypeLibrary);
         } catch (InvalidInputException | DuplicateNameException e) {
             Msg.showError(this, null, "Error of creating external data symbol", e.getMessage());
@@ -352,8 +361,9 @@ public class FindExternalReferences extends GhidraScript {
         // Create symbol
         try {
             symbolTarget.setNameAndNamespace(nameSymbolLibrary,
-                    symbolLibrary.getParentNamespace(),
-                    SourceType.IMPORTED);
+                                             symbolLibrary.getParentNamespace(),
+                                             SourceType.IMPORTED
+            );
         } catch (DuplicateNameException | CircularDependencyException | InvalidInputException e) {
             Msg.showError(this, null, "Error of creating external data symbol", e.getMessage());
             isCancelled = true;
@@ -369,9 +379,10 @@ public class FindExternalReferences extends GhidraScript {
         // Set comment with annotations
         // TODO: Find more idiomatic way for external data
         String comment = String.format("%s:{@program \"%s@%s\"}",
-                dataLibrary.getValue(),
-                domainFileLibrary.getPathname(),
-                addressLibrary);
+                                       dataLibrary.getValue(),
+                                       domainFileLibrary.getPathname(),
+                                       addressLibrary
+        );
         listingTarget.setComment(addressTarget, CodeUnit.REPEATABLE_COMMENT, comment);
     }
 
@@ -388,10 +399,12 @@ public class FindExternalReferences extends GhidraScript {
             Function functionTarget = functionManagerTarget.getFunctionAt(addressTarget);
             if (functionTarget == null) {
                 try {
-                    functionTarget = functionManagerTarget.createFunction(functionLibrary.getName(),
-                            addressTarget,
-                            new AddressSet(addressTarget),
-                            SourceType.IMPORTED);
+                    functionTarget =
+                            functionManagerTarget.createFunction(functionLibrary.getName(),
+                                                                 addressTarget,
+                                                                 new AddressSet(addressTarget),
+                                                                 SourceType.IMPORTED
+                            );
                 } catch (InvalidInputException | OverlappingFunctionException e) {
                     Msg.showError(this, null, "Error of creating function", e);
                     isCancelled = true;
@@ -399,11 +412,14 @@ public class FindExternalReferences extends GhidraScript {
                 }
             }
             try {
-                ExternalLocation externalLocation = currentProgram.getExternalManager()
-                        .addExtFunction(symbolLibrary.getProgram().getDomainFile().getName(),
-                                symbolLibrary.getName(),
-                                addressLibrary,
-                                SourceType.IMPORTED);
+                ExternalLocation externalLocation =
+                        currentProgram.getExternalManager()
+                                      .addExtFunction(symbolLibrary.getProgram().getDomainFile()
+                                                                   .getName(),
+                                                      symbolLibrary.getName(),
+                                                      addressLibrary,
+                                                      SourceType.IMPORTED
+                                      );
                 functionTarget.setThunkedFunction(externalLocation.getFunction());
             } catch (DuplicateNameException | InvalidInputException e) {
                 Msg.showError(this, null, "Error of creating external location", e);
@@ -442,11 +458,12 @@ public class FindExternalReferences extends GhidraScript {
             try {
                 functionTarget.setName(nameFunction, sourceType);
                 functionTarget.updateFunction(callingConventionName,
-                        returnFunctionLibrary,
-                        newParameters,
-                        updateType,
-                        true,
-                        sourceType);
+                                              returnFunctionLibrary,
+                                              newParameters,
+                                              updateType,
+                                              true,
+                                              sourceType
+                );
                 functionTarget.setCallFixup(callFixup);
                 functionTarget.setCustomVariableStorage(hasCustomVariableStorage);
                 functionTarget.setInline(isInline);
@@ -474,18 +491,21 @@ public class FindExternalReferences extends GhidraScript {
                 Pair<String, MemoryBlock> memoryBlockSecond = memoryBlocks.get(j);
                 AddressRange addressRangeFirst =
                         new AddressRangeImpl(memoryBlockFirst.second.getStart(),
-                                memoryBlockFirst.second.getEnd());
+                                             memoryBlockFirst.second.getEnd()
+                        );
                 AddressRange addressRangeSecond =
                         new AddressRangeImpl(memoryBlockSecond.second.getStart(),
-                                memoryBlockSecond.second.getEnd());
+                                             memoryBlockSecond.second.getEnd()
+                        );
                 AddressRange intersect = addressRangeFirst.intersect(addressRangeSecond);
                 if (intersect != null) {
                     isCancelled = true;
                     String message =
                             String.format("%s intersects %s (%s).",
-                                    memoryBlockFirst.first,
-                                    memoryBlockSecond.first,
-                                    intersect);
+                                          memoryBlockFirst.first,
+                                          memoryBlockSecond.first,
+                                          intersect
+                            );
                     Msg.showError(this, null, "Intersect error", message);
                     return;
                 }
@@ -533,12 +553,15 @@ public class FindExternalReferences extends GhidraScript {
                             .format("%s (%s)",
                                     memoryBlock.getName(),
                                     new AddressRangeImpl(memoryBlock.getStart(),
-                                            memoryBlock.getEnd())))
+                                                         memoryBlock.getEnd()
+                                    )
+                            ))
                     .collect(Collectors.toList());
             List<MemoryBlock> memoryBlocksChoice = askChoices("Choose segments",
-                    pathname,
-                    memoryBlocks,
-                    memoryBlocksStrings);
+                                                              pathname,
+                                                              memoryBlocks,
+                                                              memoryBlocksStrings
+            );
             intersectMemMap.put(pathname, memoryBlocksChoice);
         }
     }
@@ -547,8 +570,9 @@ public class FindExternalReferences extends GhidraScript {
         DomainObject libraryObject = null;
         try {
             libraryObject = libraryFile.getImmutableDomainObject(this,
-                    DomainFile.DEFAULT_VERSION,
-                    monitor);
+                                                                 DomainFile.DEFAULT_VERSION,
+                                                                 monitor
+            );
             if (!(libraryObject instanceof Program)) {
                 return null;
             }
