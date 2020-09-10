@@ -67,7 +67,7 @@ public class GetEntryPoints extends GhidraScript {
         FunctionManager functionManager = currentProgram.getFunctionManager();
         AddressFactory addressFactory = currentProgram.getAddressFactory();
         Address addressEntry =
-                addressFactory.getAddress(addressFactory.getDefaultAddressSpace().getBaseSpaceID(),
+                addressFactory.getAddress(addressFactory.getDefaultAddressSpace().getSpaceID(),
                         longAddressEntry);
 
         Function function = functionManager.getFunctionContaining(addressEntry);
