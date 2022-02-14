@@ -1,0 +1,9 @@
+{
+    "java.format.settings.url": "https://raw.githubusercontent.com/NationalSecurityAgency/ghidra/master/eclipse/GhidraEclipseFormatter.xml",
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "../ghidra/build/**/*.jar" // Ghidra should be built in upper directory. It's required for API hints.
+        ],
+    },
+}
