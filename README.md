@@ -1,36 +1,33 @@
 # Ghidra scripts
 
-<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
-**Table of Contents**
-
 - [Ghidra scripts](#ghidra-scripts)
-    - [Installing scripts](#installing-scripts)
-    - [External references search](#external-references-search)
-        - [Instruction](#instruction)
-    - [Set entry points in selection](#set-entry-points-in-selection)
-        - [Instruction](#instruction-1)
-    - [Remove all references](#remove-all-references)
-        - [From address](#from-address)
-        - [To address](#to-address)
-        - [Instruction](#instruction-2)
-    - [FindMultipleLabels](#findmultiplelabels)
-        - [Instruction](#instruction-3)
-    - [FindNeededFunctions](#findneededfunctions)
-        - [Instruction](#instruction-4)
-    - [BasicBlockModelExample](#basicblockmodelexample)
-        - [Instruction](#instruction-5)
-    - [Example of parsing PE header](#example-of-parsing-pe-header)
-        - [Instruction](#instruction-6)
-    - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
-        - [Instruction](#instruction-7)
-    - [Printing PCode](#printing-pcode)
-        - [Instruction](#instruction-8)
-    - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
-        - [Instruction](#instruction-9)
-    - [Find references of the field of a structure](#find-references-of-the-field-of-a-structure)
-        - [Instruction](#instruction-10)
-
-<!-- markdown-toc end -->
+  - [Installing scripts](#installing-scripts)
+  - [External references search](#external-references-search)
+    - [Instruction](#instruction)
+  - [Set entry points in selection](#set-entry-points-in-selection)
+    - [Instruction](#instruction-1)
+  - [Remove all references](#remove-all-references)
+    - [From address](#from-address)
+    - [To address](#to-address)
+    - [Instruction](#instruction-2)
+  - [FindMultipleLabels](#findmultiplelabels)
+    - [Instruction](#instruction-3)
+  - [FindNeededFunctions](#findneededfunctions)
+    - [Instruction](#instruction-4)
+  - [BasicBlockModelExample](#basicblockmodelexample)
+    - [Instruction](#instruction-5)
+  - [Example of parsing PE header](#example-of-parsing-pe-header)
+    - [Instruction](#instruction-6)
+  - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
+    - [Instruction](#instruction-7)
+  - [Printing PCode](#printing-pcode)
+    - [Instruction](#instruction-8)
+  - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
+    - [Instruction](#instruction-9)
+  - [Find references of the field of a structure](#find-references-of-the-field-of-a-structure)
+    - [Instruction](#instruction-10)
+  - [Rename functions in the Selection](#rename-functions-in-the-selection)
+    - [Instruction](#instruction-11)
 
 ## Installing scripts
 
@@ -211,3 +208,14 @@ The script finds all references to the field of a structure.
 1. Set cursor at the field of a structure in the Decompiler window.
 1. Run the script.
 
+## Rename functions in the Selection
+
+| :information_source: | [Source file](./RenameFunctionsInSelection.java) |
+| -------------------- | ------------------------------------------------ |
+
+The script rename all functions in the selection to one name.
+
+### Instruction
+
+1. Select all needed functions (bytes) for renaming.
+1. Run the script.
