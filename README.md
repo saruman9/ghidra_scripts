@@ -39,7 +39,7 @@ Please read `${GHIDRA_HOME}/docs/GhidraClass/Intermediate/Scripting_withNotes.ht
 ## External references search
 
 | :information_source: | [Source file](./FindExternalReferences.java) |
-| -----                | -----                                        |
+| -------------------- | -------------------------------------------- |
 
 Script finds all references to the functions and data from all external programs (shared libraries), then creates additional memory blocks and transfer all info about functions (name, signature, additional info) and data (name, also create comment with value and annotation with link to external program). A source type of symbols will be `IMPORTED`, a source type of parameters will be `IMPORTED`, if parameters of the original function don't have `DEFAULT` source type, otherwise a source type will be `DEFAULT` too.
 
@@ -54,19 +54,19 @@ Script finds all references to the functions and data from all external programs
 
     ![External programs](images/external_programs.png)
     > Figure 1. Added External Programs
-    
+
 4. Run the script (choose memory blocks if needed, see Figure 2).
 
     ![Choose segments](images/choose_segments.png)
     > Figure 2. Choose needed memory blocks
 
 | Before                         | After                        |
-| -----                          | -----                        |
+| ------------------------------ | ---------------------------- |
 | ![Before](./images/before.png) | ![After](./images/after.png) |
 > Figure 3. Before and after running the script
 
 | :information_source: | You can run the script multiple times. |
-| -----                | -----                                  |
+| -------------------- | -------------------------------------- |
 
 :warning: **Warning:**
 
@@ -84,13 +84,13 @@ Script finds all references to the functions and data from all external programs
 ## Set entry points in selection
 
 | :information_source: | [Source file](./SetEntryPointsInSelection.java) |
-| -----                | -----                                           |
+| -------------------- | ----------------------------------------------- |
 
 Script set all labels (functions) in selection as Entry Point.
 
 ### Instruction
 
-1. Select needed functions through Functions window.
+1. Select required functions through Functions window.
 2. Run the script.
 
 ## Remove all references
@@ -100,12 +100,12 @@ Use for clearing of the analysis results.
 ### From address
 
 | :information_source: | [Source file](./RemoveAllReferencesFromAddress.java) |
-| -----                | -----                                                |
+| -------------------- | ---------------------------------------------------- |
 
 ### To address
 
 | :information_source: | [Source file](./RemoveAllReferencesToAddress.java) |
-| -----                | -----                                              |
+| -------------------- | -------------------------------------------------- |
 
 ### Instruction
 
@@ -117,7 +117,7 @@ Use for clearing of the analysis results.
 Print all symbols (and their addresses) with multiple labels. Maybe useful for Version Tracking session.
 
 | :information_source: | [Source file](./FindMultipleLabels.java) |
-| -----                | -----                                    |
+| -------------------- | ---------------------------------------- |
 
 ### Instruction
 
@@ -126,7 +126,7 @@ Print all symbols (and their addresses) with multiple labels. Maybe useful for V
 ## FindNeededFunctions
 
 | :information_source: | [Source file](./FindNeededFunctions.java) |
-| -----                | -----                                     |
+| -------------------- | ----------------------------------------- |
 
 Find all functions with parameters, which will be dereferenced.
 
@@ -137,7 +137,7 @@ Find all functions with parameters, which will be dereferenced.
 ## BasicBlockModelExample
 
 | :information_source: | [Source file](./BasicBlockModelExample.java) |
-| -----                | -----                                        |
+| -------------------- | -------------------------------------------- |
 
 Prints all basic blocks of the program (change the source code for printing an interesting information) with sources and destinations information (other basic blocks).
 
@@ -148,7 +148,7 @@ Prints all basic blocks of the program (change the source code for printing an i
 ## Example of parsing PE header
 
 | :information_source: | [Source file](./GetEntryPoints.java) |
-| -----                | -----                                |
+| -------------------- | ------------------------------------ |
 
 The script parses PE header and print an entry point address (address of a valid function) from optional header.
 
@@ -159,7 +159,7 @@ The script parses PE header and print an entry point address (address of a valid
 ## Printing ASM/PCode/PCodeHigh/C
 
 | :information_source: | [Source file](./PrintCodeHeadless.java) |
-| -----                | -----                                   |
+| -------------------- | --------------------------------------- |
 
 The script should be used in headless mode. May be useful for debugging of a decompiler and writing Sleigh code. The script can print ASM code, PCode, PCodeHigh, decompiling C code (use arguments).
 
@@ -178,9 +178,9 @@ See comments in the script file.
 ## Printing PCode
 
 | :information_source: | [Source file](./PrintPCode.java) |
-| -----                | -----                            |
+| -------------------- | -------------------------------- |
 
-The script prints high PCode to console. May be useful for debugging of a decompiler. You should known, that the AST of high PCode and the AST of any varnode may be different in a scope of the same function.
+The script prints high PCode to console. May be useful for debugging of a decompiler. You should know, that the AST of high PCode and the AST of any varnode may be different in a scope of the same function.
 
 ### Instruction
 
@@ -189,20 +189,20 @@ The script prints high PCode to console. May be useful for debugging of a decomp
 ## Set default calling convention for functions in Selection
 
 | :information_source: | [Source file](./SetDefaultCallingConvInSelection.java) |
-| -----                | -----                                                  |
+| -------------------- | ------------------------------------------------------ |
 
 The script set default convention (see Language ID) for all functions in the selection.
 
 ### Instruction
 
-1. Select needed functions. I recommends do it through Functions window, where you can sort and filter functions.
+1. Select needed functions. I recommend do it through Functions window, where you can sort and filter functions.
 
 1. Run the script.
 
 ## Find references of the field of a structure
 
 | :information_source: | [Source file](./FindRefsField.java) |
-| -----                | -----                               |
+| -------------------- | ----------------------------------- |
 
 The script finds all references to the field of a structure.
 
