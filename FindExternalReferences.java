@@ -186,7 +186,7 @@ public class FindExternalReferences extends GhidraScript {
                     newMemoryBlock.setSourceName("External References resolver");
                     newMemoryBlock.setComment("NOTE: This block is artificial and is used" +
                                               " to make external references work correctly");
-                } catch (DuplicateNameException | AddressOverflowException e) {
+                } catch (AddressOverflowException e) {
                     Msg.showError(this, null, "Error of creating memory block", e);
                     isCancelled = true;
                     return;
