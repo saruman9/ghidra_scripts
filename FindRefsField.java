@@ -26,6 +26,7 @@ import ghidra.app.decompiler.DecompilerLocation;
 import ghidra.app.plugin.core.navigation.locationreferences.LocationReference;
 import ghidra.app.plugin.core.navigation.locationreferences.ReferenceUtils;
 import ghidra.app.script.GhidraScript;
+import ghidra.app.services.FieldMatcher;
 import ghidra.program.model.data.DataType;
 import ghidra.util.datastruct.ListAccumulator;
 
@@ -49,12 +50,8 @@ public class FindRefsField extends GhidraScript {
 
         ListAccumulator<LocationReference> accumulator = new ListAccumulator<>();
 
-        ReferenceUtils.findDataTypeReferences(accumulator,
-                                              baseDataType,
-                                              fieldName,
-                                              currentProgram,
-                                              monitor
-        );
+        FieldMatcher fieldMatcher = new FieldMatcher(baseDataType, fieldName);
+        ReferenceUtils.findDataTypeFieldReferences(accumulator, fieldMatcher, currentProgram, true, monitor);
 
         for (LocationReference locationReference : accumulator) {
             println(locationReference.toString());
