@@ -20,10 +20,10 @@
 //@menupath
 //@toolbar
 
-import generic.continues.RethrowContinuesFactory;
 import ghidra.app.script.GhidraScript;
 import ghidra.app.util.bin.ByteProvider;
 import ghidra.app.util.bin.MemoryByteProvider;
+import ghidra.app.util.bin.format.pe.NTHeader;
 import ghidra.app.util.bin.format.pe.OptionalHeader;
 import ghidra.app.util.bin.format.pe.PortableExecutable;
 import ghidra.program.model.address.Address;
@@ -46,20 +46,28 @@ public class GetEntryPoints extends GhidraScript {
             return;
         }
 
-        ByteProvider byteProvider = new MemoryByteProvider(currentProgram.getMemory(),
-                currentProgram.getImageBase());
+        ByteProvider byteProvider = new MemoryByteProvider(currentProgram.getMemory(), currentProgram.getImageBase());
         PortableExecutable portableExecutable = null;
         try {
-            portableExecutable =
-                    PortableExecutable.createPortableExecutable(RethrowContinuesFactory.INSTANCE,
-                            byteProvider, PortableExecutable.SectionLayout.MEMORY);
+            portableExecutable = new PortableExecutable(byteProvider, PortableExecutable.SectionLayout.MEMORY);
         } catch (IOException e) {
-            Msg.error(this, e.toString());
+            printerr(e.toString());
             byteProvider.close();
             return;
         }
 
-        OptionalHeader optionalHeader = portableExecutable.getNTHeader().getOptionalHeader();
+        NTHeader ntHeader = portableExecutable.getNTHeader();
+        if (ntHeader == null) {
+            printerr("NTHeader not found");
+            byteProvider.close();
+            return;
+        }
+        OptionalHeader optionalHeader = ntHeader.getOptionalHeader();
+        if (optionalHeader == null) {
+            printerr("OptionalHeader not found");
+            byteProvider.close();
+            return;
+        }
         long longAddressEntry =
                 optionalHeader.getAddressOfEntryPoint() + currentProgram.getImageBase().getOffset();
         printf("0x%08x\n", longAddressEntry);
