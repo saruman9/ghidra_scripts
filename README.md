@@ -4,30 +4,32 @@
   - [Installing scripts](#installing-scripts)
   - [External references search](#external-references-search)
     - [Instruction](#instruction)
-  - [Set entry points in selection](#set-entry-points-in-selection)
+  - [Find Local XRefs in Decompiler's window](#find-local-xrefs-in-decompilers-window)
     - [Instruction](#instruction-1)
+  - [Set entry points in selection](#set-entry-points-in-selection)
+    - [Instruction](#instruction-2)
   - [Remove all references](#remove-all-references)
     - [From address](#from-address)
     - [To address](#to-address)
-    - [Instruction](#instruction-2)
-  - [FindMultipleLabels](#findmultiplelabels)
     - [Instruction](#instruction-3)
-  - [FindNeededFunctions](#findneededfunctions)
+  - [FindMultipleLabels](#findmultiplelabels)
     - [Instruction](#instruction-4)
-  - [BasicBlockModelExample](#basicblockmodelexample)
+  - [FindNeededFunctions](#findneededfunctions)
     - [Instruction](#instruction-5)
-  - [Example of parsing PE header](#example-of-parsing-pe-header)
+  - [BasicBlockModelExample](#basicblockmodelexample)
     - [Instruction](#instruction-6)
-  - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
+  - [Example of parsing PE header](#example-of-parsing-pe-header)
     - [Instruction](#instruction-7)
-  - [Printing PCode](#printing-pcode)
+  - [Printing ASM/PCode/PCodeHigh/C](#printing-asmpcodepcodehighc)
     - [Instruction](#instruction-8)
-  - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
+  - [Printing PCode](#printing-pcode)
     - [Instruction](#instruction-9)
-  - [Find references of the field of a structure](#find-references-of-the-field-of-a-structure)
+  - [Set default calling convention for functions in Selection](#set-default-calling-convention-for-functions-in-selection)
     - [Instruction](#instruction-10)
-  - [Rename functions in the Selection](#rename-functions-in-the-selection)
+  - [Find references of the field of a structure](#find-references-of-the-field-of-a-structure)
     - [Instruction](#instruction-11)
+  - [Rename functions in the Selection](#rename-functions-in-the-selection)
+    - [Instruction](#instruction-12)
 
 ## Installing scripts
 
@@ -77,6 +79,22 @@ Script finds all references to the functions and data from all external programs
 
 ![In memory located symbols](images/in_memory_located_symbols.png)
 > Figure 4. Symbol with `Global` Namespace have true references
+
+## Find Local XRefs in Decompiler's window
+
+| :information_source: | [Source file](./FindLocalXRefs.java) |
+| -------------------- | ------------------------------------ |
+
+The script try to find all references for local variables in Decompiler's window like in IDA Pro or Binary Ninja.
+
+### Instruction
+
+1. Make a highlight of needed variables (see Figure 5). You can use middle button of a mouse or other algorithms for highlighting, for example Def-Use, Forward Slice, etc.
+2. Run the script or press Ctrl-X.
+
+![XRefs for local variables](./images/xrefs.gif)
+> Figure 5. XRefs to local variables
+
 
 ## Set entry points in selection
 
