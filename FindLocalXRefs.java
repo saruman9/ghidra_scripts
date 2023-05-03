@@ -30,11 +30,14 @@ import ghidra.app.decompiler.component.TokenHighlights;
 import ghidra.app.plugin.core.decompile.DecompilerProvider;
 import ghidra.app.script.GhidraScript;
 import ghidra.app.tablechooser.AddressableRowObject;
+import ghidra.app.tablechooser.ColumnDisplay;
 import ghidra.app.tablechooser.StringColumnDisplay;
 import ghidra.app.tablechooser.TableChooserDialog;
 import ghidra.framework.plugintool.PluginTool;
 import ghidra.program.model.address.Address;
 import ghidra.util.Msg;
+
+import java.util.stream.Collectors;
 
 public class FindLocalXRefs extends GhidraScript {
 
@@ -87,10 +90,25 @@ public class FindLocalXRefs extends GhidraScript {
 
             @Override
             public String getColumnValue(AddressableRowObject rowObject) {
-                return ((XRefRow) rowObject).getLine().toString();
+                return ((XRefRow) rowObject).getLine().getAllTokens().stream().map(Object::toString)
+                        .collect(Collectors.joining());
             }
         };
 
+        ColumnDisplay<Integer> lineNumberColumn = new ghidra.app.tablechooser.AbstractComparableColumnDisplay<>() {
+
+            @Override
+            public Integer getColumnValue(AddressableRowObject rowObject) {
+                return ((XRefRow) rowObject).getLine().getLineNumber();
+            }
+
+            @Override
+            public String getColumnName() {
+                return "Line Number";
+            }
+        };
+
+        dialog.addCustomColumn(lineNumberColumn);
         dialog.addCustomColumn(lineColumn);
     }
 
