@@ -60,11 +60,15 @@ public class FindLocalXRefs extends GhidraScript {
             return;
         }
 
-        TableChooserDialog tableDialog = createTableChooserDialog("XRefs for " + tokenAtCursor, null);
+        TableChooserDialog tableDialog =
+            createTableChooserDialog("XRefs for " + tokenAtCursor, null);
         configureTableColumns(tableDialog);
 
         TokenHighlights tokens =
-                decompilerProvider.getController().getDecompilerPanel().getHighlightController().getPrimaryHighlights();
+            decompilerProvider.getController()
+                    .getDecompilerPanel()
+                    .getHighlightController()
+                    .getPrimaryHighlights();
         for (HighlightToken token : tokens) {
             Address maxAddress = token.getToken().getMaxAddress();
             if (maxAddress != null) {
@@ -90,23 +94,27 @@ public class FindLocalXRefs extends GhidraScript {
 
             @Override
             public String getColumnValue(AddressableRowObject rowObject) {
-                return ((XRefRow) rowObject).getLine().getAllTokens().stream().map(Object::toString)
+                return ((XRefRow) rowObject).getLine()
+                        .getAllTokens()
+                        .stream()
+                        .map(Object::toString)
                         .collect(Collectors.joining());
             }
         };
 
-        ColumnDisplay<Integer> lineNumberColumn = new ghidra.app.tablechooser.AbstractComparableColumnDisplay<>() {
+        ColumnDisplay<Integer> lineNumberColumn =
+            new ghidra.app.tablechooser.AbstractComparableColumnDisplay<>() {
 
-            @Override
-            public Integer getColumnValue(AddressableRowObject rowObject) {
-                return ((XRefRow) rowObject).getLine().getLineNumber();
-            }
+                @Override
+                public Integer getColumnValue(AddressableRowObject rowObject) {
+                    return ((XRefRow) rowObject).getLine().getLineNumber();
+                }
 
-            @Override
-            public String getColumnName() {
-                return "Line Number";
-            }
-        };
+                @Override
+                public String getColumnName() {
+                    return "Line Number";
+                }
+            };
 
         dialog.addCustomColumn(lineNumberColumn);
         dialog.addCustomColumn(lineColumn);
