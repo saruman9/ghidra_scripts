@@ -125,7 +125,7 @@ class AcyclicCallGraphWithParamsBuilder {
         Symbol symbol = functionWithParams.getFunction().getSymbol();
         Reference[] references = symbol.getReferences(monitor);
         for (Reference reference : references) {
-            monitor.checkCanceled();
+            monitor.checkCancelled();
             if (!reference.getReferenceType().isCall()) {
                 continue;
             }
