@@ -35,11 +35,17 @@ import ghidra.app.tablechooser.StringColumnDisplay;
 import ghidra.app.tablechooser.TableChooserDialog;
 import ghidra.framework.plugintool.PluginTool;
 import ghidra.program.model.address.Address;
+import ghidra.util.HTMLUtilities;
 import ghidra.util.Msg;
 
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class FindLocalXRefs extends GhidraScript {
+
+	private static final String EMBOLDEN_START =
+		"<span style=\"background-color: #a3e4d7; color: black;\"><b><font size=4>";
+	private static final String EMBOLDEN_END = "</font></b></span>";
 
     @Override
     public void run() throws Exception {
@@ -61,7 +67,7 @@ public class FindLocalXRefs extends GhidraScript {
         }
 
         TableChooserDialog tableDialog = createTableChooserDialog("XRefs for " + tokenAtCursor, null);
-        configureTableColumns(tableDialog);
+        configureTableColumns(tableDialog, tokenAtCursor.toString());
 
         TokenHighlights tokens =
                 decompilerProvider.getController().getDecompilerPanel().getHighlightController().getPrimaryHighlights();
@@ -80,7 +86,7 @@ public class FindLocalXRefs extends GhidraScript {
     // Table stuff
     //
 
-    private void configureTableColumns(TableChooserDialog dialog) {
+    private void configureTableColumns(TableChooserDialog dialog, String key) {
 
         StringColumnDisplay lineColumn = new StringColumnDisplay() {
             @Override
@@ -90,8 +96,16 @@ public class FindLocalXRefs extends GhidraScript {
 
             @Override
             public String getColumnValue(AddressableRowObject rowObject) {
-                return ((XRefRow) rowObject).getLine().getAllTokens().stream().map(Object::toString)
-                        .collect(Collectors.joining());
+                return ((XRefRow) rowObject).getLine().getAllTokens().stream().map(new Function<ClangToken, String>() {
+                    @Override
+                    public String apply(ClangToken token) {
+                        String tokenString = token.toString();
+                        if (tokenString == key) {
+                            tokenString = EMBOLDEN_START + fixBreakingSpaces(HTMLUtilities.escapeHTML(tokenString)) + EMBOLDEN_END;
+                        }
+                        return HTMLUtilities.HTML + tokenString;
+                    }
+                }).collect(Collectors.joining());
             }
         };
 
@@ -135,5 +149,10 @@ public class FindLocalXRefs extends GhidraScript {
         public Address getAddress() {
             return address;
         }
+    }
+
+    static String fixBreakingSpaces(String s) {
+        String updated = s.replaceAll("\\s", "&nbsp;");
+        return updated;
     }
 }
