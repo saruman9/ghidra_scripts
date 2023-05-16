@@ -110,6 +110,7 @@ public class FindLocalXRefs extends GhidraScript {
 
         dialog.addCustomColumn(lineNumberColumn);
         dialog.addCustomColumn(lineColumn);
+        dialog.setSortColumn(0);
     }
 
     static class XRefRow implements AddressableRowObject {
