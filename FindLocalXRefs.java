@@ -22,8 +22,6 @@
 
 import docking.ComponentProvider;
 import ghidra.app.decompiler.ClangLine;
-import ghidra.app.decompiler.ClangToken;
-import ghidra.app.decompiler.ClangVariableToken;
 import ghidra.app.decompiler.DecompilerLocation;
 import ghidra.app.decompiler.component.HighlightToken;
 import ghidra.app.decompiler.component.TokenHighlights;
@@ -47,12 +45,6 @@ public class FindLocalXRefs extends GhidraScript {
             Msg.showError(this, null, "Error", "You should set the cursor in Decompiler window.");
             return;
         }
-        ClangToken tokenAtCursor = ((DecompilerLocation) currentLocation).getToken();
-        if (!(tokenAtCursor instanceof ClangVariableToken)) {
-            Msg.showError(this, null, "Error", "You should set the cursor on the variable token.");
-            return;
-        }
-
         PluginTool tool = state.getTool();
         ComponentProvider activeComponentProvider = tool.getActiveComponentProvider();
         if (!(activeComponentProvider instanceof DecompilerProvider decompilerProvider)) {
@@ -61,7 +53,7 @@ public class FindLocalXRefs extends GhidraScript {
         }
 
         TableChooserDialog tableDialog =
-            createTableChooserDialog("XRefs for " + tokenAtCursor, null);
+            createTableChooserDialog("XRefs", null);
         configureTableColumns(tableDialog);
 
         TokenHighlights tokens =
