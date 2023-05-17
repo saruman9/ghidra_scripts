@@ -94,11 +94,12 @@ public class FindLocalXRefs extends GhidraScript {
 
             @Override
             public String getColumnValue(AddressableRowObject rowObject) {
-                return ((XRefRow) rowObject).getLine()
-                        .getAllTokens()
+                ClangLine clangLine = ((XRefRow) rowObject).getLine();
+                String line = clangLine.getAllTokens()
                         .stream()
                         .map(Object::toString)
                         .collect(Collectors.joining());
+                return clangLine.getIndentString() + line;
             }
         };
 
